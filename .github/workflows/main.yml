@@ -1,0 +1,43 @@
+name: Testing
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run cucumber test
+    runs-on: ubuntu-latest
+
+steps:
+  - name: Check out Repo
+    uses: actions/checkout@v4
+
+  - name: Set up Java
+    uses: actions/setup-java@v4
+    with:
+      java-version: '11'
+      distribution: 'temurin'
+      cache: maven
+
+  - name: Run the Maven test phase
+    shell: bash
+    run: mvn clean test
+
+  # Upload report and artifact in summary	
+  # - run: mkdir staging && cp target/*.jar staging && cp target/cucumber.* staging && cp target/report staging
+  # - uses: actions/upload-artifact@v4
+    # with:
+      # name: Package
+      # path: staging
+
+  # - name: POM Build Summary
+    # run: |
+      # echo "# 📝 POM Build Summary" >> $GITHUB_STEP_SUMMARY
+      # echo "" >> $GITHUB_STEP_SUMMARY
+      # echo "## Inputs" >> $GITHUB_STEP_SUMMARY
+      # echo "- **java-version**: ${{ inputs.java-version }}"
+      # echo "- **java-distro**: ${{ inputs.java-distro }}"
+      # echo "## java --version Output" >> $GITHUB_STEP_SUMMARY
+      # echo "$(java --version)" >> $GITHUB_STEP_SUMMARY
